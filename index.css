@@ -33,6 +33,7 @@ body {
   font-size: 3rem;
   margin: 1rem 0;
   display: flex;
+  /* flex-wrap: wrap; */
   justify-content: space-around;
   align-items: center;
   gap: 20px;
@@ -111,54 +112,60 @@ img {
     width: 7rem;
     height: 7rem;
   }
-
-  /* img {
-    width: 7rem;
-  } */
 }
 
 @media (max-width: 1100px) {
+  .balloonBox {
+    margin-top: 200px;
+  }
+
+  .box {
+    width: 7rem;
+    height: 7rem;
+  }
+
+  .infoBox {
+    flex-wrap: wrap;
+    gap: 40px;
+  }
+}
+
+@media (max-width: 820px) {
+  .balloonBox {
+    margin-top: 100px;
+  }
+}
+
+@media (max-width: 640px) {
   html {
     font-size: 8px;
   }
 }
 
-@media (max-width: 820px) {
+@media (max-width: 540px) {
   html {
     font-size: 7px;
   }
 }
 
-@media (max-width: 820px) {
-  html {
-    font-size: 6px;
+@media (max-width: 450px) {
+  .mainContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
-  .balloonBox {
-    margin-top: 100px;
+  .infoBox {
+    gap: 15px;
+    width: 80vw;
   }
-
-  /* .box {
-    margin: 20px;
-  } */
-  /* .balloonBox {
-    margin-top: 20px;
-  } */
 }
 
-@media (max-width: 640px) {
+@media (max-width: 320px) {
   html {
     font-size: 5px;
   }
-}
-
-@media (max-width: 540px) {
-  html {
-    font-size: 4px;
-  }
-}
-
-@media (max-width: 450px) {
-  html {
-    font-size: 3px;
+  .box {
+    width: 30px;
+    height: 30px;
   }
 }
