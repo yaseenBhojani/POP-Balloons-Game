@@ -103,6 +103,7 @@ const hoverHandler = () => {
       }
       e.style.backgroundColor = "#dfe6e9";
       e.disabled = true;
+      e.style.zIndex = "-12";
       popSelectHandler();
       isWinHandler();
     });
@@ -152,7 +153,6 @@ function level3() {
     });
   }, 300);
   setInterval(() => {
-    availableColorBox = [];
     boxes.forEach((e) => {
       if (!e.disabled) {
         const color = (e.backgroundColor = initialState());
@@ -168,10 +168,10 @@ function autoReset() {
   totalPop = 0;
   popBox.innerText = "POP " + totalPop;
   isWin = null;
-  availableColorBox = [];
   boxes.forEach((e) => {
     e.innerText = "";
     e.disabled = false;
+    e.style.zIndex = "12";
   });
   initialState();
   colorBox.innerHTML = ("POP " + availableColorBox[0] + " 📌").toUpperCase();
