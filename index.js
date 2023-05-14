@@ -1,15 +1,19 @@
+// Get DOM elements
 const boxes = document.querySelectorAll(".box");
 const colorBox = document.getElementById("colorBox");
 const lifeBox = document.getElementById("chanceBox");
 const popBox = document.getElementById("popBox");
 const levelBox = document.getElementById("levelBox");
+
+// Set initial variables
 let totalLife = 3;
 let totalPop = 0;
 let isWin = null;
 let availableColorBox = [];
 let levelCount = 1;
-let islevel2 = false;
+let isLevel2 = false;
 
+// Function that selects a random color
 const colorSelector = () => {
   const randomNumber = Math.random();
   let color;
@@ -27,31 +31,35 @@ const colorSelector = () => {
   return color;
 };
 
+// Function that sets the initial state of the game
 const initialState = () => {
   availableColorBox = [];
-  boxes.forEach((e) => {
+  boxes.forEach((box) => {
     const selectColor = colorSelector();
-    if (!e.disabled) {
-      e.style.backgroundColor = selectColor;
-
+    if (!box.disabled) {
+      box.style.backgroundColor = selectColor;
       availableColorBox.push(selectColor);
     }
   });
 };
+
+// Call the initial state function
 initialState();
 
+// Function that handles the pop selection
 const popSelectHandler = () => {
   const randomNumber = Math.floor(Math.random() * availableColorBox.length);
   const colorSelect = availableColorBox[randomNumber];
-  // console.log(randomNumber);
 
   colorBox.innerHTML = `POP ${colorSelect} 📌`.toUpperCase();
   colorBox.style.color = colorSelect;
   availableColorBox.splice(randomNumber, 1);
 };
 
+// Call the pop selection function
 popSelectHandler();
 
+// Function that handles whether the game is won or lost
 const isWinHandler = () => {
   if (totalPop === 10) {
     isWin = true;
@@ -69,115 +77,125 @@ const isWinHandler = () => {
     }
   } else if (totalLife === 0) {
     isWin = false;
-    colorBox.innerText = "lose";
+    colorBox.innerText = "LOSE";
   }
 
+  // Disable all boxes after the game is won or lost
   if (isWin !== null) {
-    for (const e of boxes) {
-      if (!e.disabled) {
-        e.innerText = colorBox.innerText;
+    for (const box of boxes) {
+      if (!box.disabled) {
+        box.innerText = colorBox.innerText;
       }
-      e.disabled = true;
+      box.disabled = true;
     }
   }
 };
 
+// Function that handles the hover event over the boxes
 const hoverHandler = () => {
-  boxes.forEach((e) => {
-    e.addEventListener("mouseover", () => {
+  boxes.forEach((box) => {
+    box.addEventListener("mouseover", () => {
       const currentColor = colorBox.style.color;
-      if (e.style.backgroundColor === currentColor) {
-        e.innerHTML = "POP";
+      if (box.style.backgroundColor === currentColor) {
+        box.innerHTML = "POP";
         totalPop++;
         popBox.innerText = "POP " + totalPop;
         setTimeout(() => {
-          e.innerHTML = "<img src='./balloon.png' />";
+          box.innerHTML = "<img src='./balloon.png' />";
         }, 600);
       } else {
-        e.innerHTML = "MIS";
+        box.innerHTML = "MIS";
         totalLife--;
-        lifeBox.innerText = "❤ " + " LIFE " + totalLife;
+        lifeBox.innerText = "❤ LIFE " + totalLife;
         setTimeout(() => {
-          e.innerHTML = "<img src='./close.png' />";
+          box.innerHTML = "<img src='./close.png' />";
         }, 600);
       }
-      e.style.backgroundColor = "#dfe6e9";
-      e.disabled = true;
-      e.style.zIndex = "-12";
+      box.style.backgroundColor = "#dfe6e9";
+      box.disabled = true;
+      box.style.zIndex = "-12";
       popSelectHandler();
       isWinHandler();
     });
   });
 };
-let num;
 
+// Determine the value of num based on the screen width
+let num;
 if (innerWidth > 650) {
   num = 150;
 } else if (innerWidth < 650) {
   num = 120;
 }
+
+// Call the hover event handler function
 hoverHandler();
+
+// Function that handles level 2 of the game
 function level2() {
   autoReset();
   setInterval(() => {
-    const ballonMovingHandler = (e) => {
-      e.style.transform = `translateY(${
+    const balloonMovingHandler = (box) => {
+      box.style.transform = `translateY(${
         Math.random() * num - Math.random() * num
       }px)`;
-      e.style.transform += `translateX(${
+      box.style.transform += `translateX(${
         Math.random() * num - Math.random() * num
       }px)`;
     };
 
-    boxes.forEach((e) => {
-      ballonMovingHandler(e);
+    boxes.forEach((box) => {
+      balloonMovingHandler(box);
     });
   }, 300);
 }
 
+// Function that handles level 3 of the game
 function level3() {
   autoReset();
   levelBox.innerText = "Level 3";
   setInterval(() => {
-    const ballonMovingHandler = (e) => {
-      e.style.transform = `translateY(${
+    const balloonMovingHandler = (box) => {
+      box.style.transform = `translateY(${
         Math.random() * num - Math.random() * num
       }px)`;
-      e.style.transform += `translateX(${
+      box.style.transform += `translateX(${
         Math.random() * num - Math.random() * num
       }px)`;
     };
 
-    boxes.forEach((e) => {
-      ballonMovingHandler(e);
+    boxes.forEach((box) => {
+      balloonMovingHandler(box);
     });
   }, 300);
   setInterval(() => {
-    boxes.forEach((e) => {
-      if (!e.disabled) {
-        const color = (e.backgroundColor = initialState());
+    boxes.forEach((box) => {
+      if (!box.disabled) {
+        const color = (box.backgroundColor = initialState());
         availableColorBox.push(color);
       }
     });
   }, 3000);
 }
 
+// Function that resets the game
 function autoReset() {
   totalLife = 3;
   lifeBox.innerText = "❤ LIFE " + totalLife;
   totalPop = 0;
   popBox.innerText = "POP " + totalPop;
   isWin = null;
-  boxes.forEach((e) => {
-    e.innerText = "";
-    e.disabled = false;
-    e.style.zIndex = "12";
+  boxes.forEach((box) => {
+    box.innerText = "";
+    box.disabled = false;
+    box.style.zIndex = "12";
   });
   initialState();
   colorBox.innerHTML = ("POP " + availableColorBox[0] + " 📌").toUpperCase();
   colorBox.style.color = availableColorBox[0];
 }
 
+// Function that handles the reset button click event
 const resetHandler = () => {
   window.top.location = window.top.location;
 };
